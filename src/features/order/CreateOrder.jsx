@@ -2,10 +2,13 @@
 import { useState } from "react";
 import { Form, redirect, useNavigation, useActionData } from "react-router-dom";
 import { createOrder } from "../../services/apiRestaurant";
+import Inputs from "../../ui/components/Inputs";
+import Buttons from "../../ui/components/Buttons";
+
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
-    str
+    str,
   );
 
 const fakeCart = [
@@ -46,26 +49,31 @@ function CreateOrder() {
       <Form method="POST">
         <div>
           <label>First Name</label>
-          <input type="text" name="customer" required />
+          <Inputs
+            className="inputs"
+            type="text"
+            name="customer"
+            placeholder="First name"
+            required
+          />
         </div>
 
         <div>
           <label>Phone number</label>
           <div>
-            <input type="tel" name="phone" required />
+            <Inputs type="tel" name="phone" placeholder="Phone" required />
             {formErrors?.phone && <p>{formErrors.phone}</p>}
           </div>
         </div>
 
         <div>
           <label>Address</label>
-          <div>
-            <input type="text" name="address" required />
-          </div>
+          <Inputs type="text" name="address" placeholder="Address" required />
         </div>
 
         <div>
           <input
+            className="h-5 w-5 accent-sky-500 focus:outline-none focus:ring focus:ring-sky-500 focus:ring-offset-2"
             type="checkbox"
             name="priority"
             id="priority"
@@ -76,9 +84,9 @@ function CreateOrder() {
         </div>
 
         <div>
-          <button disabled={isSubmitting}>
+          <Buttons type="primary" disabled={isSubmitting}>
             {isSubmitting ? "Placing your order.." : "Order now"}
-          </button>
+          </Buttons>
         </div>
         <input type="hidden" name="cart" value={JSON.stringify(cart)} />
       </Form>

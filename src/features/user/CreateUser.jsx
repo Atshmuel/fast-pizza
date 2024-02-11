@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState } from "react";
+import Buttons from "../../ui/components/Buttons";
+import Inputs from "../../ui/components/Inputs";
 
 function CreateUser() {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -9,18 +11,18 @@ function CreateUser() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <p>👋 Welcome! Please start by telling us your name:</p>
-
-      <input
+      <p className="m-2">👋 Welcome! Please start by telling us your name:</p>
+      <Inputs
         type="text"
         placeholder="Your full name"
         value={username}
+        customStyles="w-72 mb-8"
         onChange={(e) => setUsername(e.target.value)}
       />
 
-      {username !== '' && (
+      {username !== "" && (
         <div>
-          <button>Start ordering</button>
+          <Buttons type="primary">Start ordering</Buttons>
         </div>
       )}
     </form>
