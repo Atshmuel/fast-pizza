@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { Form, redirect, useNavigation, useActionData } from "react-router-dom";
 import { createOrder } from "../../services/apiRestaurant";
@@ -39,39 +38,77 @@ function CreateOrder() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "loading";
   const formErrors = useActionData();
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+
   // const [withPriority, setWithPriority] = useState(false);
   const cart = fakeCart;
 
   return (
-    <div>
-      <h2>Ready to order? Let&apos;s go!</h2>
+    <div className="px-4 py-6">
+      <h2 className="mb-8 text-xl font-semibold">
+        Ready to order? Let&apos;s go!
+      </h2>
 
       <Form method="POST">
-        <div>
-          <label>First Name</label>
+        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center ">
+          <label className="sm:basis-40">First Name</label>
           <Inputs
+            customStyles="grow"
             className="inputs"
             type="text"
             name="customer"
             placeholder="First name"
+            value={`${name}`}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
             required
           />
         </div>
 
-        <div>
-          <label>Phone number</label>
-          <div>
-            <Inputs type="tel" name="phone" placeholder="Phone" required />
-            {formErrors?.phone && <p>{formErrors.phone}</p>}
+        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center ">
+          <label className="sm:basis-40">Phone number</label>
+          <div className="grow">
+            <Inputs
+              customStyles="w-full"
+              type="tel"
+              name="phone"
+              placeholder="Phone"
+              value={`${phone}`}
+              onChange={(e) => {
+                setPhone(e.target.value);
+                formErrors.phone = "";
+              }}
+              required
+            />
+            {formErrors?.phone && (
+              <p className="mt-2 w-fit rounded-md bg-red-100 p-1 text-xs text-red-600">
+                {formErrors.phone}
+              </p>
+            )}
           </div>
         </div>
 
-        <div>
-          <label>Address</label>
-          <Inputs type="text" name="address" placeholder="Address" required />
+        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center ">
+          <label className="sm:basis-40">Address</label>
+          <div className="grow">
+            <Inputs
+              customStyles="w-full"
+              type="text"
+              name="address"
+              placeholder="Address"
+              value={`${address}`}
+              onChange={(e) => {
+                setAddress(e.target.value);
+              }}
+              required
+            />
+          </div>
         </div>
 
-        <div>
+        <div className="mb-5 flex items-center gap-5">
           <input
             className="h-5 w-5 accent-sky-500 focus:outline-none focus:ring focus:ring-sky-500 focus:ring-offset-2"
             type="checkbox"
@@ -80,7 +117,9 @@ function CreateOrder() {
             // value={withPriority}
             // onChange={(e) => setWithPriority(e.target.checked)}
           />
-          <label htmlFor="priority">Want to yo give your order priority?</label>
+          <label htmlFor="priority" className="font-medium">
+            Want to yo give your order priority?
+          </label>
         </div>
 
         <div>
@@ -107,9 +146,9 @@ export async function action({ request }) {
     errors.phone = `Sorry but we need a valid phone number to contact you. Please try again.`;
   }
   if (Object.keys(errors).length > 0) return errors;
-
-  const newOrder = await createOrder(order);
-  return redirect(`/order/${newOrder.id}`);
+  return null;
+  // const newOrder = await createOrder(order);
+  // return redirect(`/order/${newOrder.id}`);
 }
 
 export default CreateOrder;
